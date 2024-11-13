@@ -16,16 +16,24 @@ fn main() {
     let mut expression: String = String::new();
     std::io::stdin().read_line(&mut expression).unwrap();
 
-    // Operations
-    let caps = re_add.captures(expression.as_str()).unwrap();
-    let left_value: i32 = caps.get(1).unwrap().as_str().parse().unwrap();
-    let right_value: i32 = caps.get(2).unwrap().as_str().parse().unwrap();
-    println!("{:?}", caps);
-    println!("Left : {}", left_value);
-    println!("Right: {}", right_value);
+    loop {
+        let caps = re_add.captures(expression.as_str());
 
-    let addition: i32 = left_value + right_value;
+        if caps.is_none() {
+            break;
+        }
+        let caps = caps.unwrap();
+        let cap_expression: &str = caps.get(0).unwrap().as_str();
+        let left_value: i32 = caps.get(1).unwrap().as_str().parse().unwrap();
+        let right_value: i32 = caps.get(2).unwrap().as_str().parse().unwrap();
+
+        let addition: i32 = left_value + right_value;
+
+        expression = expression.replace(cap_expression, &addition.to_string());
+    }
+
+    // Operations
 
     // Show result
-    println!("Result: {}", addition)
+    println!("Result: {}", expression)
 }
