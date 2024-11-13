@@ -8,6 +8,7 @@ fn main() {
     // Regex
 
     let re_add = Regex::new(r"(\d+)\s?\+\s?(\d+)").unwrap();
+    let re_prod = Regex::new(r"(\d+)\s?\*\s?(\d+)").unwrap();
     // (\d+)\s?\+\s?(\d+) -> 21 + 23
 
     // User Data
@@ -16,6 +17,23 @@ fn main() {
     let mut expression: String = String::new();
     std::io::stdin().read_line(&mut expression).unwrap();
 
+    //Product
+    loop {
+        let caps = re_prod.captures(expression.as_str());
+
+        if caps.is_none() {
+            break;
+        }
+        let caps = caps.unwrap();
+        let cap_expression: &str = caps.get(0).unwrap().as_str();
+        let left_value: i32 = caps.get(1).unwrap().as_str().parse().unwrap();
+        let right_value: i32 = caps.get(2).unwrap().as_str().parse().unwrap();
+
+        let product: i32 = left_value * right_value;
+
+        expression = expression.replace(cap_expression, &product.to_string());
+    }
+    //Addition
     loop {
         let caps = re_add.captures(expression.as_str());
 
